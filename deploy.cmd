@@ -54,16 +54,19 @@ IF NOT DEFINED KUDU_SYNC_CMD (
 
 :: 0. Build the React App
 
+echo Changing directories to "%DEPLOYMENT_SOURCE%\zucchini-for-sale\"
+
 cd "%DEPLOYMENT_SOURCE%\zucchini-for-sale\"
 
 call npm ci
 call npm run build
 
-cd "%DEPLOYMENT_SOURCE%"
-
-echo Handling Basic Web Site deployment.
+echo Changing directories to "%DEPLOYMENT_SOURCE%"
 
 :: 1. KuduSync
+::
+echo Copying files to "%DEPLOYMENT_TARGET%"
+
 IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
 
   IF /I "%IGNORE_MANIFEST%" EQU "1" (
