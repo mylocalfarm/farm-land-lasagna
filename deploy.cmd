@@ -52,6 +52,15 @@ IF NOT DEFINED KUDU_SYNC_CMD (
 :: Deployment
 :: ----------
 
+:: 0. Build the React App
+
+cd "%DEPLOYMENT_SOURCE%\zucchini-for-sale\"
+
+call npm ci
+call npm run build
+
+cd "%DEPLOYMENT_SOURCE%"
+
 echo Handling Basic Web Site deployment.
 
 :: 1. KuduSync
@@ -64,11 +73,6 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 !IGNORE_MANIFEST_PARAM! -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
   IF !ERRORLEVEL! NEQ 0 goto error
 )
-
-:: 2. Build the React App
-
-call npm --prefix "%DEPLOYMENT_TARGET%\zucchini-for-sale" ci
-call npm --prefix "%DEPLOYMENT_TARGET%\zucchini-for-sale" run build
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
