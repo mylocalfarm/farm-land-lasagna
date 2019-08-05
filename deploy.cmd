@@ -65,6 +65,11 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
+:: 2. Build the React App
+
+call npm --prefix "%DEPLOYMENT_TARGET%\zucchini-for-sale" ci
+call npm --prefix "%DEPLOYMENT_TARGET%\zucchini-for-sale" run build
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
 
