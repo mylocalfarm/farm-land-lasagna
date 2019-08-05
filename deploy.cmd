@@ -52,19 +52,6 @@ IF NOT DEFINED KUDU_SYNC_CMD (
 :: Deployment
 :: ----------
 
-:: 0. Build the React App
-
-echo Changing directory to "%DEPLOYMENT_SOURCE%\zucchini-for-sale\"
-
-cd "%DEPLOYMENT_SOURCE%\zucchini-for-sale\"
-
-:: TODO Optimze the deployment to take fewer than say five minutes.
-:: TODO Upgrade NodeJS to LTS and then use `npm ci` instead of `NPM install`.
-call npm install
-call npm run build
-
-echo Changing directory to "%DEPLOYMENT_SOURCE%"
-
 :: 1. KuduSync
 ::
 echo Copying files to "%DEPLOYMENT_TARGET%"
@@ -78,6 +65,16 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 !IGNORE_MANIFEST_PARAM! -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
   IF !ERRORLEVEL! NEQ 0 goto error
 )
+
+:: 2. Build the React App
+::
+echo Changing directory to "%DEPLOYMENT_TARGET%\zucchini-for-sale\"
+cd "%DEPLOYMENT_TARGET%\zucchini-for-sale\"
+
+:: TODO Optimze the deployment to take fewer than say five minutes.
+:: TODO Upgrade NodeJS to LTS and then use `npm ci` instead of `NPM install`.
+call npm install
+call npm run build
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
