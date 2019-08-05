@@ -2,6 +2,7 @@
   "name": "zucchini-for-sale",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://mylocal.farm/zucchini-for-sale/build",
   "dependencies": {
     "@types/jest": "24.0.16",
     "@types/node": "12.6.9",
