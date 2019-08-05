@@ -5,9 +5,11 @@
   "homepage": "https://mylocal.farm/zucchini-for-sale/build",
   "dependencies": {
     "@types/jest": "24.0.16",
+    "@types/mapbox-gl": "^0.54.1",
     "@types/node": "12.6.9",
     "@types/react": "16.8.24",
     "@types/react-dom": "16.8.5",
+    "mapbox-gl": "^1.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
