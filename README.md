@@ -1,2 +1,3 @@
 # my-local-farm
-The source code for the https://www.mylocal.farm web application.
+
+The source code for the mylocal.farm application.
