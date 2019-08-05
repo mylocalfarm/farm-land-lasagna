@@ -54,14 +54,16 @@ IF NOT DEFINED KUDU_SYNC_CMD (
 
 :: 0. Build the React App
 
-echo Changing directories to "%DEPLOYMENT_SOURCE%\zucchini-for-sale\"
+echo Changing directory to "%DEPLOYMENT_SOURCE%\zucchini-for-sale\"
 
 cd "%DEPLOYMENT_SOURCE%\zucchini-for-sale\"
 
+call node -v
+call npm -v
 call npm ci
 call npm run build
 
-echo Changing directories to "%DEPLOYMENT_SOURCE%"
+echo Changing directory to "%DEPLOYMENT_SOURCE%"
 
 :: 1. KuduSync
 ::
