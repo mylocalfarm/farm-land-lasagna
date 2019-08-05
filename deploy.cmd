@@ -58,6 +58,7 @@ echo Changing directory to "%DEPLOYMENT_SOURCE%\zucchini-for-sale\"
 
 cd "%DEPLOYMENT_SOURCE%\zucchini-for-sale\"
 
+:: TODO Optimze the deployment to take fewer than say five minutes.
 :: TODO Upgrade NodeJS to LTS and then use `npm ci` instead of `NPM install`.
 call npm install
 call npm run build
