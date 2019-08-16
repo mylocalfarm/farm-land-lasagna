@@ -18,7 +18,12 @@ const App: React.FC = () => {
     });
   }, [container]);
 
-  return <div className="map-container" ref={container} />;
+  return (
+    <>
+      <p>Please play around with this Jesse.</p>
+      <div className="map-container" ref={container} />
+    </>
+  );
 };
 
 export default App;
