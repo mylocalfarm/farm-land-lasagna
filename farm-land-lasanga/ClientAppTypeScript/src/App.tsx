@@ -18,6 +18,7 @@ const App: React.FC = () => {
           </li>
         </ul>
         <section>
+          <Route path="/" exact component={MapWithMapbox} />
           <Route path="/mapbox" component={MapWithMapbox} />
           <Route path="/leaflet" component={MapWithLeaflet} />
         </section>
