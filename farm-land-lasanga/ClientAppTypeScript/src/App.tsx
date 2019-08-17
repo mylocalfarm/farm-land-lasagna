@@ -19,6 +19,10 @@ const App: React.FC = () => {
         </ul>
         <section>
           <Route path="/" exact component={MapWithMapbox} />
+          {/* 
+            Comparison of Mapbox, Mapbox-GL, and Leaflet
+            https://stackoverflow.com/a/35070443/1108891
+          */}
           <Route path="/mapbox" component={MapWithMapbox} />
           <Route path="/leaflet" component={MapWithLeaflet} />
         </section>
