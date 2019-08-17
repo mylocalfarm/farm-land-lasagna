@@ -10,6 +10,8 @@ namespace FarmLandLasanga
 {
     public class Startup
     {
+        private const string ClientAppDirectoryName = "ClientAppTypeScript";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -25,7 +27,7 @@ namespace FarmLandLasanga
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/build";
+                configuration.RootPath = $"{ClientAppDirectoryName}/build";
             });
         }
 
@@ -56,7 +58,7 @@ namespace FarmLandLasanga
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = ClientAppDirectoryName;
 
                 if (env.IsDevelopment())
                 {
