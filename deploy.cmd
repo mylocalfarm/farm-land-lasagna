@@ -47,34 +47,36 @@ IF NOT DEFINED KUDU_SYNC_CMD (
   :: Locally just running "kuduSync" would also work
   SET KUDU_SYNC_CMD=%appdata%\npm\kuduSync.cmd
 )
+IF NOT DEFINED DEPLOYMENT_TEMP (
+  SET DEPLOYMENT_TEMP=%temp%\___deployTemp%random%
+  SET CLEAN_LOCAL_DEPLOYMENT_TEMP=true
+)
 
+IF DEFINED CLEAN_LOCAL_DEPLOYMENT_TEMP (
+  IF EXIST "%DEPLOYMENT_TEMP%" rd /s /q "%DEPLOYMENT_TEMP%"
+  mkdir "%DEPLOYMENT_TEMP%"
+)
+
+IF DEFINED MSBUILD_PATH goto MsbuildPathDefined
+SET MSBUILD_PATH=%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe
+:MsbuildPathDefined
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Deployment
 :: ----------
 
-:: 1. KuduSync
-::
-echo Copying files to "%DEPLOYMENT_TARGET%"
+echo Handling ASP.NET Core Web Application deployment.
 
-IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
+:: 1. Restore nuget packages
+call :ExecuteCmd dotnet restore "%DEPLOYMENT_SOURCE%\farm-land-lasanga\FarmLandLasanga.csproj"
+IF !ERRORLEVEL! NEQ 0 goto error
 
-  IF /I "%IGNORE_MANIFEST%" EQU "1" (
-    SET IGNORE_MANIFEST_PARAM=-x
-  )
+:: 2. Build and publish
+call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\farm-land-lasanga\FarmLandLasanga.csproj" --output "%DEPLOYMENT_TEMP%" --configuration Release
+IF !ERRORLEVEL! NEQ 0 goto error
 
-  call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 !IGNORE_MANIFEST_PARAM! -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
-  IF !ERRORLEVEL! NEQ 0 goto error
-)
-
-:: 2. Build the React App
-::
-echo Changing directory to "%DEPLOYMENT_TARGET%\zucchini-for-sale\"
-cd "%DEPLOYMENT_TARGET%\zucchini-for-sale\"
-
-:: TODO Optimze the deployment to take fewer than say five minutes.
-:: TODO Upgrade NodeJS to LTS and then use `npm ci` instead of `NPM install`.
-call npm install
-call npm run build
+:: 3. KuduSync
+call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_TEMP%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
+IF !ERRORLEVEL! NEQ 0 goto error
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end

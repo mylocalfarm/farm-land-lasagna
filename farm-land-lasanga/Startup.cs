@@ -10,7 +10,9 @@ namespace FarmLandLasanga
 {
     public class Startup
     {
-        private const string ClientAppDirectoryName = "ClientAppTypeScript";
+        // This is the root directory for the single page application (SPA). 
+        // For deployment to work, the *.csproj SpaRoot property must be the same as this.
+        private const string SpaRoot = "ClientAppTypeScript";
 
         public Startup(IConfiguration configuration)
         {
@@ -27,7 +29,7 @@ namespace FarmLandLasanga
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = $"{ClientAppDirectoryName}/build";
+                configuration.RootPath = $"{SpaRoot}/build";
             });
         }
 
@@ -58,7 +60,7 @@ namespace FarmLandLasanga
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = ClientAppDirectoryName;
+                spa.Options.SourcePath = SpaRoot;
 
                 if (env.IsDevelopment())
                 {
