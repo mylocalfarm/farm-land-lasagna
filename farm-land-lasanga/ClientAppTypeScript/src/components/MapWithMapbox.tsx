@@ -14,8 +14,8 @@ const MapWithMapbox: React.FC = () => {
     const map = new mapboxgl.Map({
       container: container.current,
       style: "mapbox://styles/mapbox/streets-v11",
-      center: [-122.486052, 37.830348],
-      zoom: 15
+      center: [-123.5, 48.8],
+      zoom: 10
     });
 
     map.on("load", function() {
