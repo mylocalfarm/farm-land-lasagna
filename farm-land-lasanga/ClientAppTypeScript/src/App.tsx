@@ -9,12 +9,17 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Router>
-        <ul>
+        <ul className="list-horizontal">
           <li>
             <Link to="/mapbox">Mapbox</Link>
           </li>
           <li>
             <Link to="/leaflet">Leaflet</Link>
+          </li>
+          <li>
+            <a href="https://www.github.com/shaunluttin/my-local-farm">
+              Contribute
+            </a>
           </li>
         </ul>
         <section>

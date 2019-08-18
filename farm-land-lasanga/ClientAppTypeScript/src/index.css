@@ -3,3 +3,8 @@
   height: 100vh;
   width: 100vw;
 }
+
+ul.list-horizontal li {
+  display: inline;
+  margin-right: 25px;
+}
