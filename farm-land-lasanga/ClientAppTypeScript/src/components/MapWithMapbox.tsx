@@ -19,22 +19,22 @@ const MapWithMapbox: React.FC = () => {
     });
 
     map.on("load", function() {
-      map.addSource("testData", {
+      map.addSource("alr", {
         type: "geojson",
-        data: "/api/sampleData/GeoJSON"
+        data: "/api/geojson/alr"
       });
 
       map.addLayer({
         id: "test",
         type: "line",
-        source: "testData",
+        source: "alr",
         layout: {
           "line-join": "round",
           "line-cap": "round"
         },
         paint: {
           "line-color": "#888",
-          "line-width": 8
+          "line-width": 1
         }
       });
     });
