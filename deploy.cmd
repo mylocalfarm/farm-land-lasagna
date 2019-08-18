@@ -71,8 +71,11 @@ call :ExecuteCmd dotnet restore "%DEPLOYMENT_SOURCE%\farm-land-lasanga\FarmLandL
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 2. Build and publish
-call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\farm-land-lasanga\FarmLandLasanga.csproj" --output "%DEPLOYMENT_TARGET%" --configuration Release
+call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\farm-land-lasanga\FarmLandLasanga.csproj" --output "%DEPLOYMENT_TARGET%" --configuration Release --verbosity detailed
 IF !ERRORLEVEL! NEQ 0 goto error
+
+:: To improve performance, we changed from using KuduSync to publishing directly to the `DEPLOYMENT_TARGET`. 
+:: Unfortunately, deployment still takes over five minutes (though it's less than two minutes locally).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
