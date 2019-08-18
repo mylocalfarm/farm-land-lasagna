@@ -14,8 +14,8 @@ const MapWithMapbox: React.FC = () => {
     const map = new mapboxgl.Map({
       container: container.current,
       style: "mapbox://styles/mapbox/streets-v11",
-      center: [-123.5, 48.8],
-      zoom: 10
+      center: [-123.5, 48.84],
+      zoom: 11
     });
 
     map.on("load", function() {
@@ -25,7 +25,7 @@ const MapWithMapbox: React.FC = () => {
       });
 
       map.addLayer({
-        id: "test",
+        id: "alrLine",
         type: "line",
         source: "alr",
         layout: {
@@ -33,7 +33,7 @@ const MapWithMapbox: React.FC = () => {
           "line-cap": "round"
         },
         paint: {
-          "line-color": "#888",
+          "line-color": "red",
           "line-width": 1
         }
       });
