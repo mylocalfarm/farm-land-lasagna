@@ -33,7 +33,7 @@ const MapWithMapbox: React.FC = () => {
           "line-cap": "round"
         },
         paint: {
-          "line-color": "red",
+          "line-color": "green",
           "line-width": 1
         }
       });
