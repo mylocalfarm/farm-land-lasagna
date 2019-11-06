@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import ReactMapGL, { Marker } from 'react-map-gl'
+import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import * as FarmData from '../data/data-sample.json'
-import FarmIcon from './FarmIcon.js'
+import FarmDetails from './FarmDetails'
 
 const mapboxAccessToken =
   process.env.REACT_APP_MAPBOX_ACCESS_TOKEN ?
@@ -15,11 +15,8 @@ const MapWithReactMapGL = () => {
     width: '100vw',
     height: '100vh',
     zoom: 11
-  })
-
-  function handleIconClick(details) {
-    alert(details);
-  }
+  });
+  const [selectedFarm, setSelectedFarm] = useState(null);
 
   return (
     <div className="map-container">
@@ -43,9 +40,30 @@ const MapWithReactMapGL = () => {
             latitude={feature.geometry.coordinates[0][0][0][1]}
             longitude={feature.geometry.coordinates[0][0][0][0]}
           >
-            <FarmIcon handleClick={handleIconClick} farmName={feature.properties.NAME} />
+            <button
+              className="marker"
+              onClick={e => {
+                e.preventDefault();
+                setSelectedFarm(feature);
+                console.log(feature);
+              }}
+            >
+              <img src="/images/farm-icon.svg" alt="Farm Icon" />
+            </button >
           </Marker>
         ))}
+
+        {selectedFarm ? (
+          <Popup
+            latitude={selectedFarm.geometry.coordinates[0][0][0][1]}
+            longitude={selectedFarm.geometry.coordinates[0][0][0][0]}
+            onClose={() => {
+              setSelectedFarm(null);
+            }}
+          >
+            <FarmDetails farm={selectedFarm} />
+          </Popup>
+        ) : null}
       </ReactMapGL>
     </div >
   )
