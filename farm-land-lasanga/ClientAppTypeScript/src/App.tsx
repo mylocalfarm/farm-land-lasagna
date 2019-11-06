@@ -1,7 +1,10 @@
 import React from "react";
 import MapWithLeaflet from "./components/MapWithLeaflet";
 import MapWithMapbox from "./components/MapWithMapbox";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import MapWithReactMapGL from "./components/MapWithReactMapGL";
+import Navigation from './layout/Navigation';
+
 /**
  * TODO Add dynamic React routing for the different maps.
  */
@@ -9,27 +12,16 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Router>
-        <ul className="list-horizontal">
-          <li>
-            <Link to="/mapbox">Mapbox</Link>
-          </li>
-          <li>
-            <Link to="/leaflet">Leaflet</Link>
-          </li>
-          <li>
-            <a href="https://www.github.com/shaunluttin/my-local-farm">
-              Contribute
-            </a>
-          </li>
-        </ul>
+        <Navigation />
         <section>
           <Route path="/" exact component={MapWithMapbox} />
-          {/* 
+          {/*
             Comparison of Mapbox, Mapbox-GL, and Leaflet
             https://stackoverflow.com/a/35070443/1108891
           */}
           <Route path="/mapbox" component={MapWithMapbox} />
           <Route path="/leaflet" component={MapWithLeaflet} />
+          <Route path="/reactmap" component={MapWithReactMapGL} />
         </section>
       </Router>
     </div>
