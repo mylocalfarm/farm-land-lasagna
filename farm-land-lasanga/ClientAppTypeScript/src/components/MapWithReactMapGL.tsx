@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios';
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
-import * as FarmData from '../data/data-sample.json'
-import FarmDetails from './FarmDetails'
+import FarmDetails from './FarmDetails';
+
+import * as FarmData from '../data/data-sample.json';
 
 const mapboxAccessToken =
   process.env.REACT_APP_MAPBOX_ACCESS_TOKEN ?
@@ -16,7 +18,27 @@ const MapWithReactMapGL = () => {
     height: '100vh',
     zoom: 11
   });
-  const [selectedFarm, setSelectedFarm] = useState(null);
+  const [farmData, setFarmData] = useState({});
+  const [selectedFarm, setSelectedFarm] = useState({ NAME: "jesse", geometry: { coordinates: [[[[0, 0]]]] } });
+
+  useEffect(() => {
+    // Let ESCAPE key close the popup
+    const listener = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSelectedFarm({ NAME: "jesse", geometry: { coordinates: [[[[0, 0]]]] } });
+      }
+    }
+    window.addEventListener("keydown", listener);
+
+    // Load Farm Data
+    axios.get("https://localhost:5001/api/geojson/alr").then(res => {
+      setFarmData(res.data);
+    });
+
+    return () => {
+      window.removeEventListener("keydown", listener);
+    }
+  }, [])
 
   return (
     <div className="map-container">
@@ -34,7 +56,7 @@ const MapWithReactMapGL = () => {
           });
         }}
       >
-        {FarmData.features.map(feature => (
+        {FarmData.features.map((feature: any) => (
           <Marker
             key={feature.properties.id}
             latitude={feature.geometry.coordinates[0][0][0][1]}
@@ -58,13 +80,14 @@ const MapWithReactMapGL = () => {
             latitude={selectedFarm.geometry.coordinates[0][0][0][1]}
             longitude={selectedFarm.geometry.coordinates[0][0][0][0]}
             onClose={() => {
-              setSelectedFarm(null);
+              setSelectedFarm({ NAME: "jesse", geometry: { coordinates: [[[[0, 0]]]] } });
             }}
           >
             <FarmDetails farm={selectedFarm} />
           </Popup>
         ) : null}
       </ReactMapGL>
+      }
     </div >
   )
 }
