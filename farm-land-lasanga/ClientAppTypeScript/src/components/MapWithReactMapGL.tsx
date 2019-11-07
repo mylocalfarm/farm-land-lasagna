@@ -18,22 +18,22 @@ const MapWithReactMapGL = () => {
     height: '100vh',
     zoom: 11
   });
-  const [farmData, setFarmData] = useState({});
-  const [selectedFarm, setSelectedFarm] = useState({ NAME: "jesse", geometry: { coordinates: [[[[0, 0]]]] } });
+  //const [farmData, setFarmData] = useState({});
+  const [selectedFarm, setSelectedFarm] = useState(null);
 
   useEffect(() => {
     // Let ESCAPE key close the popup
     const listener = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setSelectedFarm({ NAME: "jesse", geometry: { coordinates: [[[[0, 0]]]] } });
+        setSelectedFarm(null);
       }
     }
     window.addEventListener("keydown", listener);
 
-    // Load Farm Data
+    /* Load Farm Data
     axios.get("https://localhost:5001/api/geojson/alr").then(res => {
       setFarmData(res.data);
-    });
+    });*/
 
     return () => {
       window.removeEventListener("keydown", listener);
@@ -80,7 +80,7 @@ const MapWithReactMapGL = () => {
             latitude={selectedFarm.geometry.coordinates[0][0][0][1]}
             longitude={selectedFarm.geometry.coordinates[0][0][0][0]}
             onClose={() => {
-              setSelectedFarm({ NAME: "jesse", geometry: { coordinates: [[[[0, 0]]]] } });
+              setSelectedFarm(null);
             }}
           >
             <FarmDetails farm={selectedFarm} />
