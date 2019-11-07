@@ -1,19 +1,27 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export default function FarmDetails({ farm }: { farm: any }) {
+interface IFarm {
+  name: string;
+  coordinates: number[];
+  area: number;
+  length: number;
+  status: string;
+}
+
+export default function FarmDetails({ farm }: { farm: IFarm }) {
   return (
     <StyledFarmDetails>
-      {/*       <h2>{farm.properties.NAME}</h2>
+      <h2>{farm.name}</h2>
       <p>
-        <strong>Area:</strong> {farm.properties.SHAPE_Area}
+        <strong>Area:</strong> {farm.area}
       </p>
       <p>
-        <strong>Perimeter:</strong> {farm.properties.SHAPE_Leng}
+        <strong>Perimeter:</strong> {farm.length}
       </p>
       <p>
-        <strong>Status:</strong> {farm.properties.STATUS}
-      </p> */}
+        <strong>Status:</strong> {farm.status}
+      </p>
     </StyledFarmDetails>
   )
 }

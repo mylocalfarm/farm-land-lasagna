@@ -5,6 +5,14 @@ import FarmDetails from './FarmDetails';
 
 import * as FarmData from '../data/data-sample.json';
 
+interface IFarm {
+  name: string;
+  coordinates: number[];
+  area: number;
+  length: number;
+  status: string;
+}
+
 const mapboxAccessToken =
   process.env.REACT_APP_MAPBOX_ACCESS_TOKEN ?
     process.env.REACT_APP_MAPBOX_ACCESS_TOKEN :
@@ -19,7 +27,7 @@ const MapWithReactMapGL = () => {
     zoom: 11
   });
   const [farmData, setFarmData] = useState([]);
-  const [selectedFarm, setSelectedFarm] = useState(null);
+  const [selectedFarm, setSelectedFarm] = React.useState<IFarm | null>(null);
 
   useEffect(() => {
     // Let ESCAPE key close the popup
@@ -90,17 +98,17 @@ const MapWithReactMapGL = () => {
           </Marker>
         ))}
 
-        {/*         {selectedFarm ? (
+        {selectedFarm ? (
           <Popup
-            latitude={selectedFarm.geometry.coordinates[0][0][0][1]}
-            longitude={selectedFarm.geometry.coordinates[0][0][0][0]}
+            latitude={selectedFarm.coordinates[0]}
+            longitude={selectedFarm.coordinates[1]}
             onClose={() => {
               setSelectedFarm(null);
             }}
           >
             <FarmDetails farm={selectedFarm} />
           </Popup>
-        ) : null} */}
+        ) : null}
       </ReactMapGL>
       }
     </div >
