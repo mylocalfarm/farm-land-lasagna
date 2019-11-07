@@ -18,7 +18,7 @@ const MapWithReactMapGL = () => {
     height: '100vh',
     zoom: 11
   });
-  //const [farmData, setFarmData] = useState({});
+  const [farmData, setFarmData] = useState([]);
   const [selectedFarm, setSelectedFarm] = useState(null);
 
   useEffect(() => {
@@ -30,15 +30,31 @@ const MapWithReactMapGL = () => {
     }
     window.addEventListener("keydown", listener);
 
-    /* Load Farm Data
+    // Load Farm Data
     axios.get("https://localhost:5001/api/geojson/alr").then(res => {
-      setFarmData(res.data);
-    });*/
+      setFarmData(parseFarmData(res.data));
+    });
 
     return () => {
       window.removeEventListener("keydown", listener);
     }
-  }, [])
+  }, []);
+
+  const parseFarmData = (data: any) => {
+    return data.features.map((feature: any) => {
+      return {
+        id: feature.properties.id,
+        name: feature.properties.NAME,
+        coordinates: [
+          feature.geometry.coordinates[0][0][0][1],
+          feature.geometry.coordinates[0][0][0][0]
+        ],
+        shape: feature.properties.SHAPE_Area,
+        length: feature.properties.SHAPE_Leng,
+        status: feature.properties.STATUS
+      }
+    });
+  }
 
   return (
     <div className="map-container">
@@ -56,18 +72,17 @@ const MapWithReactMapGL = () => {
           });
         }}
       >
-        {FarmData.features.map((feature: any) => (
+        {farmData.map((farm: any) => (
           <Marker
-            key={feature.properties.id}
-            latitude={feature.geometry.coordinates[0][0][0][1]}
-            longitude={feature.geometry.coordinates[0][0][0][0]}
+            key={farm.id}
+            latitude={farm.coordinates[0]}
+            longitude={farm.coordinates[1]}
           >
             <button
               className="marker"
               onClick={e => {
                 e.preventDefault();
-                setSelectedFarm(feature);
-                console.log(feature);
+                setSelectedFarm(farm);
               }}
             >
               <img src="/images/farm-icon.svg" alt="Farm Icon" />
@@ -75,7 +90,7 @@ const MapWithReactMapGL = () => {
           </Marker>
         ))}
 
-        {selectedFarm ? (
+        {/*         {selectedFarm ? (
           <Popup
             latitude={selectedFarm.geometry.coordinates[0][0][0][1]}
             longitude={selectedFarm.geometry.coordinates[0][0][0][0]}
@@ -85,7 +100,7 @@ const MapWithReactMapGL = () => {
           >
             <FarmDetails farm={selectedFarm} />
           </Popup>
-        ) : null}
+        ) : null} */}
       </ReactMapGL>
       }
     </div >
