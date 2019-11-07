@@ -26,7 +26,7 @@ const MapWithReactMapGL = () => {
     height: '100vh',
     zoom: 11
   });
-  const [farmData, setFarmData] = useState([]);
+  const [farmData, setFarmData] = React.useState<[] | null>(null);
   const [selectedFarm, setSelectedFarm] = React.useState<IFarm | null>(null);
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const MapWithReactMapGL = () => {
           });
         }}
       >
-        {farmData.map((farm: any) => (
+        {farmData && farmData.map((farm: any) => (
           <Marker
             key={farm.id}
             latitude={farm.coordinates[0]}
@@ -98,7 +98,7 @@ const MapWithReactMapGL = () => {
           </Marker>
         ))}
 
-        {selectedFarm ? (
+        {selectedFarm &&
           <Popup
             latitude={selectedFarm.coordinates[0]}
             longitude={selectedFarm.coordinates[1]}
@@ -108,7 +108,7 @@ const MapWithReactMapGL = () => {
           >
             <FarmDetails farm={selectedFarm} />
           </Popup>
-        ) : null}
+        }
       </ReactMapGL>
       }
     </div >
