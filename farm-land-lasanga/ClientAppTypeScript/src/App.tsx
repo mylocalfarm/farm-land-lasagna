@@ -1,8 +1,8 @@
 import React from "react";
 import MapWithLeaflet from "./components/MapWithLeaflet";
 import MapWithMapbox from "./components/MapWithMapbox";
+import MapWithReactMapGL from "./components/MapWithReactMapGL";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import MapWithReactMapGL from "./components/MapWithReactMapGL.js";
 import Layout from './layout/Layout';
 
 /**
@@ -18,6 +18,7 @@ const App: React.FC = () => {
             {/*
               Comparison of Mapbox, Mapbox-GL, and Leaflet
               https://stackoverflow.com/a/35070443/1108891
+
             */}
             <Route path="/mapbox" component={MapWithMapbox} />
             <Route path="/leaflet" component={MapWithLeaflet} />
