@@ -211,7 +211,7 @@ const StyledLayers = styled.div`
   top: 3rem;
   right: 3rem;
   width: 242px;
-  opacity: 1;
+  opacity: .3;
   transition: all .2s ease;
   display: flex;
   flex-direction: column;
