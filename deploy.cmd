@@ -67,11 +67,11 @@ SET MSBUILD_PATH=%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe
 echo Handling ASP.NET Core Web Application deployment.
 
 :: 1. Restore nuget packages
-call :ExecuteCmd dotnet restore "%DEPLOYMENT_SOURCE%\farm-land-lasanga\FarmLandLasanga.csproj"
+call :ExecuteCmd dotnet restore "%DEPLOYMENT_SOURCE%\FarmLandLasanga\FarmLandLasanga.csproj"
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 2. Build and publish
-call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\farm-land-lasanga\FarmLandLasanga.csproj" --output "%DEPLOYMENT_TARGET%" --configuration Release --verbosity detailed
+call :ExecuteCmd dotnet publish "%DEPLOYMENT_SOURCE%\FarmLandLasanga\FarmLandLasanga.csproj" --output "%DEPLOYMENT_TARGET%" --configuration Release --verbosity detailed
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: To improve performance, we changed from using KuduSync to publishing directly to the `DEPLOYMENT_TARGET`. 
