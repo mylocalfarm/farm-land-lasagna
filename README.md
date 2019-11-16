@@ -29,3 +29,9 @@ dotnet run
 ## Running from Docker
 
 See the [Dockerfile](Dockerfile) for details.
+
+# Continuous Deployment
+
+We are using GoCD. 
+
+It is temporarily wide open here http://165.22.235.94:8153/go/pipelines#!/ Ssh. Don't tell.
