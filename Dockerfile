@@ -1,11 +1,15 @@
 #
-# Usage
+# Basic Usage
 #
 # docker build --pull -t farm_app_image
 # docker run --name farm_app_container --rm -it -p 8000:80 farm_app_image
 #
 # Then visit localhost:8000
 #
+
+# set build-time environmental variables; we can override these with `--build-arg` 
+ARG NODE_OPTIONS=--max-old-space-size=325
+ARG GENERATE_SOURCEMAP=false
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 ARG NODE_OPTIONS
