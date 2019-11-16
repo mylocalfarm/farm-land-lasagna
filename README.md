@@ -28,8 +28,4 @@ dotnet run
 
 ## Running from Docker
 
-```
-docker build --pull -t farm-land-lasanga .
-docker run --name farm --rm -it -p 8000:80 farm-land-lasanga
-```
-
+See the [Dockerfile][Dockerfile] for details.

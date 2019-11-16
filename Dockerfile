@@ -1,7 +1,16 @@
+#
+# Usage
+#
+# docker build --pull -t farm_app_image
+# docker run --name farm_app_container --rm -it -p 8000:80 farm_app_image
+#
+# Then visit localhost:8000
+#
+
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 WORKDIR /app
 
-# Prevent 'Warning: apt-key output should not be parsed (stdout is not a terminal)'
+# prevent 'Warning: apt-key output should not be parsed (stdout is not a terminal)'
 ENV ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
 
 # install NodeJS
