@@ -28,4 +28,4 @@ dotnet run
 
 ## Running from Docker
 
-See the [Dockerfile][Dockerfile] for details.
+See the [Dockerfile](Dockerfile) for details.
