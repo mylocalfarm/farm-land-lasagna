@@ -21,8 +21,6 @@ COPY FarmLandLasanga/. ./FarmLandLasanga/
 WORKDIR /app/FarmLandLasanga
 RUN dotnet publish -c Release -o out
 
-RUN ls -la out
-
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/FarmLandLasanga/out ./
