@@ -20,6 +20,9 @@ RUN apt-get install curl gnupg -yq
 RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
 RUN apt-get install -y nodejs
 
+# check the maximim memory size of v8
+RUN node -e 'console.log(v8.getHeapStatistics().total_available_size / 1024 / 1024)'
+
 # copy csproj and restore as distinct layers
 COPY *.sln .
 COPY FarmLandLasanga/*.csproj ./FarmLandLasanga/
