@@ -8,6 +8,8 @@
 #
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
+ARG NODE_OPTIONS
+ARG GENERATE_SOURCEMAP
 WORKDIR /app
 
 # prevent 'Warning: apt-key output should not be parsed (stdout is not a terminal)'
