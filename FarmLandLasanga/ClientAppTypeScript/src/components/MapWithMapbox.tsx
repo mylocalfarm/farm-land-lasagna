@@ -39,7 +39,7 @@ const MapWithMapbox: React.FC = () => {
       });
 
       map.addLayer({
-        id: "alrLineToo",
+        id: "alrFill",
         type: "fill",
         source: "alr",
         layout: {},
