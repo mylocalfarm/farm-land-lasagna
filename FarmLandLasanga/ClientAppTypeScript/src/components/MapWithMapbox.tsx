@@ -37,6 +37,17 @@ const MapWithMapbox: React.FC = () => {
           "line-width": 1
         }
       });
+
+      map.addLayer({
+        id: "alrLineToo",
+        type: "fill",
+        source: "alr",
+        layout: {},
+        paint: {
+          "fill-opacity": 0.5,
+          "fill-color": "green"
+        }
+      });
     });
   }, [container]);
 
