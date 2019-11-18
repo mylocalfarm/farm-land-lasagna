@@ -1,6 +1,9 @@
 export const black = "#010101";
 export const white = "#F4F4F4";
-export const themeColorDark = "#001220";
-export const themeColorLight = "#005596";
+export const color1 = "#394648";
+export const color2 = "#69995D";
+export const color3 = "#CBAC88";
+export const color4 = "#EDB6A3";
+export const color5 = "#F8E9E9";
 export const lightGrey = "#c7cbd1";
 export const darkGrey = "#abadb3";

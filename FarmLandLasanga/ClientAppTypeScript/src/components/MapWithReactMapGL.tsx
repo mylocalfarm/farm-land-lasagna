@@ -5,8 +5,9 @@ import ReactMapGL, { Marker, Popup, Source, Layer } from 'react-map-gl'
 import FarmDetails from './FarmDetails';
 import styled from 'styled-components';
 import {
-  themeColorDark,
-  themeColorLight,
+  color1,
+  color2,
+  color5,
   white,
   lightGrey,
   darkGrey
@@ -37,6 +38,10 @@ const MapWithReactMapGL = () => {
   const [selectedFarm, setSelectedFarm] = React.useState<IFarm | null>(null);
   const [landLayerVisibility, setLandLayerVisibility] = React.useState<string>("visible");
   const [boundLayerVisibility, setBoundLayerVisibility] = React.useState<string>("visible");
+  const [farmLayerVisibility, setFarmLayerVisibility] = React.useState<boolean>(true);
+  const [popupClass, setPopupClass] = React.useState<string>("popup-closed");
+
+  const popup = React.createRef();
 
   useEffect(() => {
     // Let ESCAPE key close the popup
@@ -48,7 +53,7 @@ const MapWithReactMapGL = () => {
     window.addEventListener("keydown", listener);
 
     // Load Farm Data
-    axios.get("https://localhost:5001/api/geojson/alr").then(res => {
+    axios.get("/api/geojson/alr").then(res => {
       setFarmData(parseFarmData(res.data));
       setGeoJsonFarmData(res.data);
     });
@@ -58,14 +63,8 @@ const MapWithReactMapGL = () => {
     }
   }, []);
 
-  const geojson = {
-    type: 'FeatureCollection',
-    features: [
-      { type: 'Feature', geometry: { type: 'Point', coordinates: [-122.4, 37.8] } }
-    ]
-  };
-
   const parseFarmData = (data: any) => {
+    console.log(data);
     return data.features.map((feature: any) => {  // TODO create an interface
       return {
         id: feature.properties.id,
@@ -74,7 +73,7 @@ const MapWithReactMapGL = () => {
           feature.geometry.coordinates[0][0][0][1],
           feature.geometry.coordinates[0][0][0][0]
         ],
-        shape: feature.properties.SHAPE_Area,
+        area: feature.properties.SHAPE_Area,
         length: feature.properties.SHAPE_Leng,
         status: feature.properties.STATUS
       }
@@ -93,8 +92,6 @@ const MapWithReactMapGL = () => {
     }
   }
 
-  /* I tend to use an else if so that it will
-     be easier to add another else if, if needed */
   const toggleBoundLayer = () => {
     if (boundLayerVisibility === "visible") {
       setBoundLayerVisibility("none");
@@ -103,13 +100,13 @@ const MapWithReactMapGL = () => {
     }
   }
 
-  const parkLayer = {
-    id: 'landuse_park',
-    type: 'fill',
-    source: 'mapbox',
-    'source-layer': 'landuse',
-    filter: ['==', 'class', 'park']
-  };
+  const toggleMarkerLayer = () => {
+    setFarmLayerVisibility(!farmLayerVisibility);
+  }
+
+  const closePopup = () => {
+    setPopupClass("popup-closed");
+  }
 
   return (
     <div className="map-container">
@@ -133,7 +130,7 @@ const MapWithReactMapGL = () => {
             type="fill"
             visible="none"
             paint={{
-              "fill-color": '#007cbf'
+              "fill-color": `${color2}`
             }}
             layout={{
               "visibility": `${landLayerVisibility}`
@@ -142,7 +139,7 @@ const MapWithReactMapGL = () => {
             id="farmLandBounds"
             type="line"
             paint={{
-              "line-color": '#003e8f',
+              "line-color": `${color1}`,
               "line-width": 2
             }}
             layout={{
@@ -151,37 +148,36 @@ const MapWithReactMapGL = () => {
               "visibility": `${boundLayerVisibility}`
             }} />
         </Source>
-        {/* <Layer type="line" id="markers">
-          {farmData && farmData.map((farm: any) => (
-            <Marker
-              key={farm.id}
-              latitude={farm.coordinates[0]}
-              longitude={farm.coordinates[1]}
-            >
-              <button
-                className="marker"
-                onClick={e => {
-                  e.preventDefault();
-                  setSelectedFarm(farm);
-                }}
-              >
-                <img src="/images/farm-icon.svg" alt="Farm Icon" />
-              </button >
-            </Marker>
-          ))}
-
-          {selectedFarm &&
-            <Popup
-              latitude={selectedFarm.coordinates[0]}
-              longitude={selectedFarm.coordinates[1]}
-              onClose={() => {
-                setSelectedFarm(null);
+        {farmLayerVisibility && farmData && farmData.map((farm: any) => (
+          <Marker
+            key={farm.id}
+            latitude={farm.coordinates[0]}
+            longitude={farm.coordinates[1]}
+          >
+            <button
+              className="marker"
+              onClick={e => {
+                e.preventDefault();
+                setPopupClass("popup-open");
+                setSelectedFarm(farm);
               }}
             >
-              <FarmDetails farm={selectedFarm} />
-            </Popup>
-          }
-        </Layer> */}
+            </button >
+          </Marker>
+        ))}
+
+        {selectedFarm &&
+          <Popup
+            className={popupClass}
+            latitude={selectedFarm.coordinates[0]}
+            longitude={selectedFarm.coordinates[1]}
+            onClose={() => {
+              closePopup();
+            }}
+          >
+            <FarmDetails farm={selectedFarm} />
+          </Popup>
+        }
       </ReactMapGL>
       <StyledLayers>
         {/*
@@ -197,6 +193,10 @@ const MapWithReactMapGL = () => {
           <input id="boundLayer" type="checkbox" onChange={toggleBoundLayer} />
           <label htmlFor="boundLayer">LAND LINES</label>
         </div>
+        <div>
+          <input id="farmMarkers" type="checkbox" onChange={toggleMarkerLayer} />
+          <label htmlFor="farmMarkers">FARM MARKERS</label>
+        </div>
       </StyledLayers>
     </div>
   )
@@ -205,13 +205,15 @@ const MapWithReactMapGL = () => {
 export default MapWithReactMapGL;
 
 const StyledLayers = styled.div`
-  background-color: ${white};
-  box-shadow: 1px 1px 5px 0 rgba(0,0,0,.2);
+  color: ${color1};
+  background-color: ${color5};
+  box-shadow: 1px 1px 15px 1px rgba(0,0,0,.2);
+  border-radius: 3px;
   position: absolute;
   top: 3rem;
   right: 3rem;
   width: 242px;
-  opacity: .3;
+  opacity: .9;
   transition: all .2s ease;
   display: flex;
   flex-direction: column;
@@ -248,7 +250,7 @@ const StyledLayers = styled.div`
   }
 
   label {
-    color: ${themeColorDark};
+    color: ${color1};
     display: block;
     text-transform: uppercase;
     font-size: 1.4rem;
@@ -265,7 +267,7 @@ const StyledLayers = styled.div`
       width: 2.5rem;
       height: 2rem;
       border-radius: 1rem;
-      background-color: ${themeColorLight};
+      background-color: ${color2};
       transition: all .3s ease;
       box-shadow: inset -1px -1px 1px 1px rgba(0,0,0,.2);
     }

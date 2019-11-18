@@ -1,5 +1,4 @@
 import React from "react";
-import MapWithLeaflet from "./components/MapWithLeaflet";
 import MapWithMapbox from "./components/MapWithMapbox";
 import MapWithReactMapGL from "./components/MapWithReactMapGL";
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -21,7 +20,6 @@ const App: React.FC = () => {
               https://stackoverflow.com/a/35070443/1108891
             */}
             <Route path="/mapbox" component={MapWithMapbox} />
-            <Route path="/leaflet" component={MapWithLeaflet} />
             <Route path="/reactmap" component={MapWithReactMapGL} />
           </section>
         </Layout>
