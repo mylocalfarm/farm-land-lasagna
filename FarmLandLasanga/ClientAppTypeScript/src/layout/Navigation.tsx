@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { NavLink } from "react-router-dom";
 import styled from 'styled-components';
-import { themeColorDark, themeColorLight } from '../theme/theme';
+import { color1, color2 } from '../theme/theme';
 
 const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -11,9 +11,6 @@ const Navigation: React.FC = () => {
       <ul className="sidenav__list">
         <li className="sidenav__list-item">
           <NavLink exact to="/" activeClassName="active">Mapbox</NavLink>
-        </li>
-        <li className="sidenav__list-item">
-          <NavLink to="/leaflet" activeClassName="active">Leaflet</NavLink>
         </li>
         <li className="sidenav__list-item">
           <NavLink to="/reactmap" activeClassName="active">ReactMap</NavLink>
@@ -35,7 +32,7 @@ const StyledNavigation = styled.aside`
   display: flex;
   flex-direction: column;
   grid-area: sidenav;
-  background-color: ${themeColorDark};
+  background-color: ${color1};
   height: 100vh;
   z-index: 50;
   position: relative;
@@ -47,17 +44,22 @@ const StyledNavigation = styled.aside`
   }
 
   .sidenav__list {
-        padding: 0;
-      margin-top: 85px;
-      list-style-type: none;
-    }
-  .sidenav__list-item {
-      transition: all .2s ease;
-      padding: 20px 20px 20px 40px;
-      color: #ddd;
-    }
-  .sidenav__list-item:hover {
-      background-color: ${themeColorLight};
+    padding: 0;
+    margin-top: 85px;
+    list-style-type: none;
+  }
+  .sidenav__list-item a,
+  .sidenav__list-item a:link {
+    display: block;
+    transition: all .2s ease;
+    padding: 20px 20px 20px 40px;
+    color: #ddd;
+  }
+  .sidenav__list-item:hover a {
+    background-color: darken(${color1});
+  }
+  .sidenav__list-item a.active {
+      background-color: ${color2};
       cursor: pointer;
     }
     a, a:link {
@@ -74,7 +76,7 @@ const StyledHandle = styled.div`
   border-radius: 30px;
   text-align: center;
   color: white;
-  background-color: ${themeColorDark};
+  background-color: ${color1};
   right: -30px;
   top: 50%;
   cursor: pointer;
@@ -85,6 +87,6 @@ const StyledHandle = styled.div`
   transition: all .3s ease;
 
     &:hover {
-      background-color: ${themeColorLight};
+      background-color: ${color2};
     }
 `;
