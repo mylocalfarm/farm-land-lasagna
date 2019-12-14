@@ -23,7 +23,7 @@ Instal .NET Core and NodeJS. Then...
 ```
 git clone git@github.com:mylocalfarm/mylocalfarm.git
 cd FarmLandLasagna
-dotnet run --environment "Development"
+dotnet watch run --environment "Development"
 ```
 
 ## Running from Docker
@@ -34,4 +34,4 @@ See the [Dockerfile](Dockerfile) for details.
 
 We are using GoCD. 
 
-It is temporarily wide open here http://165.22.235.94:8153/go/pipelines#!/ and deploying to http://138.197.140.250/ Don't tell.
+It is temporarily wide open here http://165.22.235.94:8153/go/pipelines#!/ and deploying to http://138.197.140.250/
