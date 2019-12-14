@@ -23,7 +23,7 @@ Instal .NET Core and NodeJS. Then...
 ```
 git clone git@github.com:mylocalfarm/mylocalfarm.git
 cd FarmLandLasagna
-dotnet run
+dotnet run --environment "Development"
 ```
 
 ## Running from Docker
