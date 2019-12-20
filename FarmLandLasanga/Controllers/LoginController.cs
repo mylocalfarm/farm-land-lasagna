@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using FarmLandLasanga.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FarmLandLasanga.Controllers
@@ -13,23 +14,35 @@ namespace FarmLandLasanga.Controllers
     [Route("api/[controller]")]
     public class LoginController : Controller
     {
-        // https://localhost:5001/api/login
-        // { "email": "shaun@bigfont.ca" }
+        private IEmailService _emailService;
+
+        public LoginController(IEmailService emailService)
+        {
+            _emailService = emailService;
+        }
+
+        // curl -k 'https://localhost:5001/api/login' -H 'Content-Type: application/json' --data '{ "email": "shaun@bigfont.ca" }'
         [HttpPost()]
         public async Task<JsonResult> Post([FromBody]LoginMessage loginMessage)
         {
             await Task.CompletedTask;
             System.Console.WriteLine(loginMessage);
+
+            _emailService.SendOneTimePassword(loginMessage.Email);
+
             return Json(loginMessage);
         }
 
-        // https://localhost:5001/api/login/some-one-time-password
+        // curl -k 'https://localhost:5001/api/login/some-one-time-password'
         [HttpGet("{password}")]
-        public async Task<ContentResult> Get(string password)
+        public async Task<JsonResult> Get(string password)
         {
             await Task.CompletedTask;
             System.Console.WriteLine(password);
-            return Content(password);
+
+            var tokens = _emailService.ProcessOneTimePassword(password);
+
+            return Json(tokens);
         }
     }
 }

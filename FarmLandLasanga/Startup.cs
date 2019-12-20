@@ -1,3 +1,4 @@
+using FarmLandLasanga.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,11 @@ namespace FarmLandLasanga
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<MailGunEmailOptions>(Configuration);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            services.AddTransient<IEmailService, MailGunEmailService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
