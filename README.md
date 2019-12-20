@@ -12,7 +12,7 @@ We're in a throwaway prototyping phase.
 2. Work as fast as possible... barf on the page.
 3. Know that the rebuild will take at least 10x as long as the prototype.
 
-# Project management
+## Project management
 
 https://github.com/emptylab/files/blob/master/who_is_working_on_what.csv
 
