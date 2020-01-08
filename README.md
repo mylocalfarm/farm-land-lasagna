@@ -38,4 +38,4 @@ See the [Dockerfile](Dockerfile) for details.
 
 We are using GoCD. 
 
-It is temporarily wide open here http://165.22.235.94:8153/go/pipelines#!/ and deploying to http://138.197.140.250/
+It hosted at http://165.22.235.94:8153/go/pipelines#!/ and deploying to http://138.197.140.250/
