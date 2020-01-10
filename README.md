@@ -22,7 +22,7 @@ Instal .NET Core and NodeJS. Then...
 
 ```
 git clone git@github.com:mylocalfarm/mylocalfarm.git
-cd FarmLandLasagna
+cd FarmLandLasanga
 dotnet watch run --environment "Development"
 ```
 
