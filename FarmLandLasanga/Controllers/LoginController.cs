@@ -22,6 +22,7 @@ namespace FarmLandLasanga.Controllers
         }
 
         // curl -k 'https://localhost:5001/api/login' -H 'Content-Type: application/json' --data '{ "email": "shaun@bigfont.ca" }'
+        // curl -k 'https://localhost:5001/api/login' -H 'Content-Type: application/json' --data '{ "email": "jesse@burtonmediainc.com" }'
         [HttpPost()]
         public async Task<JsonResult> Post([FromBody]LoginMessage loginMessage)
         {
