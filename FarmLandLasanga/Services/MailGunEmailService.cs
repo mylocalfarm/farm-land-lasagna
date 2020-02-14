@@ -14,9 +14,14 @@ namespace FarmLandLasanga.Services
             _options = options.Value;
         }
 
-        public void SendOneTimePassword(string email)
+        public void SendOneTimePassword(string email, string magicLink)
         {
-            System.Console.WriteLine(_options.MailGunFromAddress);
+            System.Console.WriteLine(new
+            {
+                from = _options.MailGunFromAddress,
+                to = email,
+                magicLink
+            });
 
             var client = new RestClient();
 
@@ -32,16 +37,11 @@ namespace FarmLandLasanga.Services
             request.AddParameter("from", $"MyLocal.Farm <{_options.MailGunFromAddress}>");
             request.AddParameter("to", email);
             request.AddParameter("subject", "Log in to MyLocal.Farm");
-            request.AddParameter("text", "Here is your one-time password link: TODO");
+            request.AddParameter("text", magicLink);
 
             var response = client.Execute(request);
 
             System.Console.WriteLine(response.Content);
-        }
-
-        public object ProcessOneTimePassword(string password)
-        {
-            return new { };
         }
     }
 }

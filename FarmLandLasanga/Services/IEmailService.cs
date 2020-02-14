@@ -2,8 +2,6 @@ namespace FarmLandLasanga.Services
 {
     public interface IEmailService
     {
-        void SendOneTimePassword(string email);
-
-        object ProcessOneTimePassword(string password);
+        void SendOneTimePassword(string email, string magicLink);
     }
 }

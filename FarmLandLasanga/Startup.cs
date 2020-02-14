@@ -1,14 +1,25 @@
 using FarmLandLasanga.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 
 namespace FarmLandLasanga
 {
+    public class UserDbContext : IdentityDbContext
+    {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Filename=MyLocalFarm.db");
+        }
+    }
+
     public class Startup
     {
         // This is the root directory for the single page application (SPA). 
@@ -18,6 +29,11 @@ namespace FarmLandLasanga
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            using (var client = new UserDbContext())
+            {
+                client.Database.EnsureCreated();
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -25,9 +41,20 @@ namespace FarmLandLasanga
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<MailGunEmailOptions>(Configuration);
+            // TODO Set up passwordless authentication without Entity Framework.
+            services
+                .AddEntityFrameworkSqlite()
+                .AddDbContext<IdentityDbContext>(options => options.UseSqlite("Filename=MyLocalFarm.db"));
+
+            services.AddAuthentication();
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            services.Configure<MailGunEmailOptions>(Configuration);
 
             services.AddTransient<IEmailService, MailGunEmailService>();
 
